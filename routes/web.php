@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Models\User;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +17,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware('guest')->group(function () {
+    $user_count = User::count();
+
+    if(!$user_count) {
+        Route::get('/', [RegisteredUserController::class, 'create'])
+                ->name('register');
+
+        Route::post('register', [RegisteredUserController::class, 'store']);
+    } else {
+        Route::get('/', [AuthenticatedSessionController::class, 'create'])
+                ->name('login');
+    }
 });
+
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+require __DIR__.'/auth.php';

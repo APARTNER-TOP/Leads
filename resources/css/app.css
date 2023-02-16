@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+/* copyright */
+.copyright {
+    position: absolute;
+    left: 10px;
+    bottom: 40px;
+}
+
+.copyright .link {
+    display: block;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: sans-serif;
+    text-decoration: none;
+    position: relative;
+    cursor: pointer;
+    background-color: yellow;
+    border-radius: 3px;
+    transition: border-radius 1.5s linear;
+    color: blue;
+}
+
+.copyright .link .description {
+    display: block;
+    position: absolute;
+    top: -110px;
+    left: 0;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 10px;
+    background-color: blue;
+    color: #fff;
+    border-radius: 3px 3px 0 0;
+    transition: all 1.5s linear;
+    opacity: 0;
+}
+
+.copyright .link:hover {
+    border-radius: 0 0 3px 3px;
+    transition: border-radius 1.5s linear;
+}
+
+.copyright .link:hover .description {
+    transition: all 1.5s linear;
+    opacity: 1;
+}
