@@ -9,6 +9,8 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\keyController;
+// use Illuminate\Support\Facades\Auth;
 
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
@@ -21,30 +23,38 @@ Route::middleware('guest')->group(function () {
 
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
-    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
-                ->name('password.request');
+    // Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
+    //             ->name('password.request');
 
-    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
-                ->name('password.email');
+    // Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
+    //             ->name('password.email');
 
-    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
-                ->name('password.reset');
+    // Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
+    //             ->name('password.reset');
 
-    Route::post('reset-password', [NewPasswordController::class, 'store'])
-                ->name('password.update');
+    // Route::post('reset-password', [NewPasswordController::class, 'store'])
+    //             ->name('password.update');
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])
-                ->name('verification.notice');
+    Route::get('dashboard/key', [KeyController::class, 'index'])->name('key.index');
+    Route::get('dashboard/key/create', [KeyController::class, 'create'])->name('key.create');
+    Route::post('dashboard/key/store', [KeyController::class, 'store'])->name('key.save');
+    Route::get('dashboard/key/edit/{id}', [KeyController::class, 'edit'])->name('key.edit');
+    Route::post('dashboard/key/update/{id}', [KeyController::class, 'update'])->name('key.update');
+    Route::post('dashboard/key/delete/{id}', [KeyController::class, 'destroy'])->name('key.delete');
 
-    Route::get('verify-email/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
-                ->middleware(['signed', 'throttle:6,1'])
-                ->name('verification.verify');
 
-    Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-                ->middleware('throttle:6,1')
-                ->name('verification.send');
+    // Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])
+    //             ->name('verification.notice');
+
+    // Route::get('verify-email/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
+    //             ->middleware(['signed', 'throttle:6,1'])
+    //             ->name('verification.verify');
+
+    // Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
+    //             ->middleware('throttle:6,1')
+    //             ->name('verification.send');
 
     Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
                 ->name('password.confirm');

@@ -31,9 +31,8 @@ Route::middleware('guest')->group(function () {
     }
 });
 
-
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('dashboard.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+require_once __DIR__.'/auth.php';
