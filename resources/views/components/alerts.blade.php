@@ -3,7 +3,7 @@
     x-data="{ show: true }"
     x-show="show"
     x-transition
-    x-init="setTimeout(() => show = false, 2000)"
+    x-init="setTimeout(() => show = false, 5000)"
     >
         <ul>
             @foreach ($errors->all() as $error)
@@ -18,7 +18,8 @@
     x-data="{ show: true }"
     x-show="show"
     x-transition
-    x-init="setTimeout(() => show = false, 2000)">
+    x-init="setTimeout(() => show = false, 10000)"
+    >
         {{ session('error') }}
     </div>
 @endif

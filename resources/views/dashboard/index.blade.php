@@ -10,7 +10,14 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div class="max-w-xl">
+
+                        @if (count($keys) === 0)
+                            @if(Auth::user()->admin === 1)
+                                <a href="{{ route('key.create') }}" class="btn btn-info">Please create key</a>
+                            @endif
+                        @else
                         @include('components.form')
+                        @endif
                     </div>
                 </div>
             </div>

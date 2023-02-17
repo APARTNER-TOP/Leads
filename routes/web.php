@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Models\User;
+use App\Models\Key;
 
 
 /*
@@ -32,7 +33,11 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard.index');
+
+    $user = User::find(2);
+    $keys = Key::all();
+
+    return view('dashboard.index', compact('keys', 'user'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 require_once __DIR__.'/auth.php';
