@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __(' Edit Key') }}
+            {{ __(' Edit User') }}
         </h2>
     </x-slot>
 
@@ -9,14 +9,14 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <form method="POST" action="{{ route('key.update', $key->id) }}">
+                    <form method="POST" action="{{ route('users.update', $user->id) }}">
                         @csrf
                         <div>
                             <label class="block font-medium text-sm text-gray-700" for="key">
                                 Key
                             </label>
 
-                            <input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="key" type="text" name="key" value="{{ $key->key }}" required="required" autofocus="autofocus">
+                            <input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="key" type="text" name="key" value="{{ $user->key }}" required="required" autofocus="autofocus">
 
                         </div>
 

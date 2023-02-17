@@ -75,7 +75,13 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        if(!Check::isAdmin()) {
+            return redirect('/dashboard');
+        }
+
+        $user = User::find($id);
+
+        return view('dashboard.users.profile.edit', compact('user'));
     }
 
     /**
@@ -87,7 +93,17 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if(!Check::isAdmin()) {
+            return redirect('/dashboard');
+        }
+
+        $key = User::find($id);
+        $key->fill($request->all());
+        if($key->save()) {
+            return redirect('/dashboard/users')->with('success', 'User update');
+        }
+
+        return back()->with('erorr','error not found');
     }
 
     /**
