@@ -16,15 +16,20 @@
                     <ul>
                         @foreach($keys as $key)
                             <li class="mt-2 d-flex">
-                                {{ $key->key }}
-                                <a href="{{ route('key.edit', $key->id) }}" class="btn btn-info ml-2 mr-2">{{ _('Edit') }}</a>
+                                <div class="col-md-3 col-sm-6 col-auto">{{ $key->key }}</div>
 
-                                <form method="POST" action="{{ route('key.delete', $key->id) }}">
+                                <div class="col-auto">
+
+
+                                <a href="{{ route('key.edit', $key->id) }}" class="btn btn-warning ml-2 mr-2">{{ _('Edit') }}</a>
+
+                                <form method="POST" class="btn btn-danger" action="{{ route('key.delete', $key->id) }}">
                                     @csrf
-                                    <button type="submit1" class="btn btn-danger">
+                                    <button type="submit">
                                         {{ _('Delete') }}
                                     </button>
                                 </form>
+                                </div>
                             </li>
                         @endforeach
                     </ul>

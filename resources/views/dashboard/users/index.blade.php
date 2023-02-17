@@ -15,26 +15,32 @@
 
                     <ul>
                         @foreach($items as $item)
-                        <li class="mt-2 d-flex">
-                            <!-- {{ $item->name }} -->
-                            {{ $item->email }}
+                        <li class="mt-2">
+                            <div class="row">
+                                <div class="col-md-3 col-sm-6">
+                                    <!-- {{ $item->name }} -->
+                                    {{ $item->email }}
 
-                            @if($item->admin)
-                            <p class="text-danger ml-2">admin</p>
-                            @else
-                            <p class="text-success ml-2">user</p>
-                            @endif
+                                    @if($item->admin)
+                                    <p class="text-danger ml-2">admin</p>
+                                    @else
+                                    <p class="text-success ml-2">user</p>
+                                    @endif
+                                </div>
 
-                            <a href="{{ route('users.edit', $item->id) }}" class="btn btn-info ml-2 mr-2">{{ _('Edit') }}</a>
+                                <div class="d-fle col-4">
+                                    <a href="{{ route('users.edit', $item->id) }}" class="btn btn-warning ml-2 mr-2">{{ _('Edit') }}</a>
 
-                            @if($item->id > 1)
-                            <form method="POST" action="{{ route('users.delete', $item->id) }}">
-                                @csrf
-                                <button class="btn btn-danger">
-                                    {{ _('Delete') }}
-                                </button>
-                            </form>
-                            @endif
+                                    @if($item->id > 1)
+                                    <form method="POST" class="btn btn-danger" action="{{ route('users.delete', $item->id) }}">
+                                        @csrf
+                                        <button>
+                                            {{ _('Delete') }}
+                                        </button>
+                                    </form>
+                                    @endif
+                                </div>
+                            </div>
                         </li>
                         @endforeach
                     </ul>

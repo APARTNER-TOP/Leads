@@ -56,7 +56,7 @@ class keyController extends Controller
         ]);
 
         if(Key::create($request->all())) {
-            return redirect('/dashboard')->with('success', 'Key successfully created!');
+            return redirect('/dashboard/keys')->with('success', 'Key successfully created!');
         }
     }
 
@@ -93,7 +93,7 @@ class keyController extends Controller
         $key = Key::find($id);
         $key->fill($request->all());
         if($key->save()) {
-            return redirect('/dashboard/key')->with('success', 'key update');
+            return redirect('/dashboard/keys')->with('success', 'key update');
         }
 
         return back()->with('erorr','error not found');
@@ -112,7 +112,7 @@ class keyController extends Controller
         }
 
         if(Key::find($id)->delete()) {
-            return redirect('/dashboard/key')->with('success','successfully deleted');
+            return redirect('/dashboard/keys')->with('success','successfully deleted');
         }
 
         return back()->with('erorr','error not found');
