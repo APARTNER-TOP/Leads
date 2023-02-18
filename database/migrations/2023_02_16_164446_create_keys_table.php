@@ -19,6 +19,10 @@ return new class extends Migration
             $table->string('key');
             // $table->timestamps();
         });
+
+        DB::table('keys')->insert([
+            ['name' => 'Test key', 'key' => '8c00130d-872f-4912-81c9-553f38ec61e0'],
+        ]);
     }
 
     /**
