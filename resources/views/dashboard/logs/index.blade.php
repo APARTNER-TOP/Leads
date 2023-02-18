@@ -14,17 +14,24 @@
                         @foreach($logs as $log)
                             <li class="mt-2 d-flex">
                                 <div class="col-md-3 col-sm-6 col-auto overflow-hidden">
-                                    ID: {{ $log->id }}
+                                {{ _('ID') }}: {{ $log->id }}
+                                {{ $log->user->email }}
                                     <br>
-                                    {{ $log->key }}
+                                    {{ _('Date') }}: {{ $log->created_at }}
+                                    <p class="@if($log->status == 'error') text-danger @else text-success @endif">{{ $log->status }}</p>
                                 </div>
 
                                 <div class="col-auto">
-                                    <a href="{{ route('log.show', $log->id) }}" class="btn btn-warning ml-2 mr-2">{{ _('Show') }}</a>
+                                    <a href="{{ route('logs.show', $log->id) }}" class="btn btn-warning ml-2 mr-2">{{ _('Show') }}</a>
                                 </div>
                             </li>
                         @endforeach
                     </ul>
+
+                    {{ $logs->links() }}
+
+                    <!-- {!! $logs->withQueryString()->links('pagination::bootstrap-5') !!} -->
+
                     @else
                         <p>{{ __('Logs is empty.') }}</p>
                     @endif

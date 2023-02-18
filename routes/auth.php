@@ -13,6 +13,7 @@ use App\Http\Controllers\KeyController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\LogController;
 // use Illuminate\Support\Facades\Auth;
 
 Route::middleware('guest')->group(function () {
@@ -52,6 +53,8 @@ Route::middleware('auth')->group(function () {
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
     Route::post('dashboard/api/send', [ApiController::class, 'send'])->name('send');
+
+    Route::resource('dashboard/logs', LogController::class);
 
     // Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])
     //             ->name('verification.notice');
