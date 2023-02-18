@@ -6,7 +6,7 @@
 <script>
     $('#date-container input').datepicker({
         format: 'mm/dd/yyyy',
-        // startDate: '-0d'
+        startDate: '-0d'
     });
 </script>
 @endif

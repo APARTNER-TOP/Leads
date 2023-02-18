@@ -24,12 +24,18 @@
             <x-input-label for="key" :value="__('Key type')" />
             <select id="type_user" name="key" class="form-control rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full">
                 @foreach($keys as $key)
-                <option value="{{ $key->key }}" @if(old('key') == 0) selected @endif>{{ $key->name }}</option>
+                <option value="{{ $key->key }}" @if(old('key') ==  $key->key ) selected @endif>{{ $key->name }}</option>
                 @endforeach
             </select>
 
             @if(false && !$errors->get('key'))
                 <p>{{ _('required field')}}</p>
+            @endif
+
+            @if(session('error_key'))
+                <ul class="text-sm text-red-600 space-y-1 mt-2">
+                        <li>{{ session('error_key') }}</li>
+                </ul>
             @endif
 
             <x-input-error :messages="$errors->get('key')" class="mt-2" />

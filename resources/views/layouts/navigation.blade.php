@@ -17,23 +17,17 @@
                     </x-nav-link>
 
                     @if(Auth::user()->admin === 1)
-                    <x-nav-link :href="route('key.index')" :active="request()->routeIs('key.index')">
-                        {{ __('Keys') }}
-                    </x-nav-link>
+                        <x-nav-link :href="route('key.index')" :active="request()->routeIs('key.index')">
+                            {{ __('Keys') }}
+                        </x-nav-link>
 
-                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
-                        {{ __('Users') }}
-                    </x-nav-link>
+                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
+                            {{ __('Users') }}
+                        </x-nav-link>
 
-                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
-                        {{ __('Users') }}
-                    </x-nav-link>
-
-                    <!--
-                    <x-nav-link :href="route('key.index')" :active="request()->routeIs('key.index')">
-                        {{ __('Logs') }}
-                    </x-nav-link> -->
-
+                        <x-nav-link :href="route('logs.index')" :active="request()->routeIs('logs.index')">
+                            {{ __('Logs') }}
+                        </x-nav-link>
                     @endif
                 </div>
             </div>
