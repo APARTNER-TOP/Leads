@@ -11,6 +11,10 @@
     bottom: 40px;
 }
 
+.copyright.show {
+    position: relative;
+}
+
 .copyright .link {
     display: block;
     padding: 10px;

@@ -55,6 +55,3 @@
         </form>
     </x-auth-card>
 </x-guest-layout>
-
-@include('components.script')
-@include('components.copyright')

@@ -16,7 +16,7 @@
                     <ul>
                         @foreach($keys as $key)
                             <li class="mt-2 d-flex">
-                                <div class="col-md-3 col-sm-6 col-auto">
+                                <div class="col-md-3 col-sm-6 col-auto overflow-hidden">
                                     {{ $key->name }}
                                     <br>
                                     {{ $key->key }}
