@@ -41,7 +41,7 @@ class LogController extends Controller
         $result = [];
 
         foreach ($log->result as $value) {
-            $result[] = str_replace(['\\', '{', '"', 'Vehicles:[', '}]}'],[''],$value);
+            $result[] = str_replace(['\\', '{', '}', '"', 'Vehicles:', '[',']'],[''],$value);
         }
 
         $log->result = $result;

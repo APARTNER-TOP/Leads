@@ -204,7 +204,9 @@ COPYRIGHT;
 
         $copyright = $copyright ?? $response->body();
 
-        // dd($copyright);
+        if(env('COPYRIGHT') === false) {
+            $copyright = false;
+        }
 
         view()->share('copyright', $copyright);
     }

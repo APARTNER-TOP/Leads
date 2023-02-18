@@ -103,7 +103,7 @@ class UserController extends Controller
             return redirect('/dashboard/users')->with('success', 'User update');
         }
 
-        return back()->with('erorr','error not found');
+        return back()->with('error','error not found');
     }
 
     /**
@@ -118,10 +118,14 @@ class UserController extends Controller
             return redirect('/dashboard');
         }
 
+        if($id == 1) {
+            return back()->with('error','Disable delete this administrator');
+        }
+
         if(User::find($id)->delete()) {
             return redirect('/dashboard/users')->with('success','User successfully deleted');
         }
 
-        return back()->with('erorr','error not found');
+        return back()->with('error','error not found');
     }
 }
