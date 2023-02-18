@@ -8,7 +8,8 @@ use App\Models\Log;
 
 class ApiController extends Controller
 {
-    protected static $api = env('API_SANDBOX') ? 'https://api.batscrm.com/leads-sandbox/sandbox' : 'https://api.batscrm.com/leads';
+    protected static $api_sandbox = 'https://api.batscrm.com/leads-sandbox/sandbox';
+    protected static $api = 'https://api.batscrm.com/leads';
 
     /**
      * Api send.
@@ -87,7 +88,7 @@ class ApiController extends Controller
             ]
         }';
 
-        $response = Http::post(self::$api, $json);
+        $response = Http::post(env('API_SANDBOX') ? self::$api_sandbox : self::$api, $json);
 
         //! throw error
         if($response->failed()) {
