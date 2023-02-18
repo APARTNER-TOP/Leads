@@ -12,9 +12,14 @@
                     <p>Created at: {{ $log->created_at }}</p>
                     <p class="@if($log->status == 'error') text-danger @else text-success @endif">Status: {{ $log->status }}</p>
                     <p>Code: {{ $log->code }}</p>
+
+                    @if(isset($log->user->id))
                     <p>User ID: {{ $log->user->id }}</p>
-                    <p>User Email: {{ $log->user->email }}</p>
-                    <p>User Name: {{ $log->user->name }}</p>
+                    <p>User Email: {{ $log->user->email ?? ''}}</p>
+                    <p>User Name: {{ $log->user->name ?? ''}}</p>
+                    @else
+                    <p>User: {{ _('is deleted') }}</p>
+                    @endif
 
                     <h2 class="mt-3 text-success">Data send</h2>
                     @foreach($log->data as $key => $data)

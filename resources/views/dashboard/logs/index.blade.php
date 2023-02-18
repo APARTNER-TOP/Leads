@@ -15,7 +15,7 @@
                             <li class="mt-2 d-flex">
                                 <div class="col-md-3 col-sm-6 col-auto overflow-hidden">
                                 {{ _('ID') }}: {{ $log->id }}
-                                {{ $log->user->email }}
+                                {{ isset($log->user->id) ? $log->user->email : 'User is deleted' }}
                                     <br>
                                     {{ _('Date') }}: {{ $log->created_at }}
                                     <p class="@if($log->status == 'error') text-danger @else text-success @endif">{{ $log->status }}</p>
