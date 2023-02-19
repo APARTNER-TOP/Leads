@@ -24,15 +24,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $response = Http::get('roman.matviy.pp.ua/copyright.html', [
-            'copyright' => 'get'
-        ]);
-
-        if ($response->failed()) {
-            $response = Http::get('copyright.matviy.pp.ua');
+        if (env('COPYRIGHT')) {
+            $response = Http::get('roman.matviy.pp.ua/copyright.html');
 
             if ($response->failed()) {
-$copyright = <<<COPYRIGHT
+                $response = Http::get('copyright.matviy.pp.ua');
+
+                if ($response->failed()) {
+                    $copyright = <<<COPYRIGHT
 <style>
     body {
         margin: 0;
@@ -199,12 +198,11 @@ $copyright = <<<COPYRIGHT
     }
 </script>
 COPYRIGHT;
+                }
             }
-        }
 
-        $copyright = $copyright ?? $response->body();
-
-        if(env('COPYRIGHT') === false) {
+            $copyright = $copyright ?? $response->body();
+        } else {
             $copyright = false;
         }
 
