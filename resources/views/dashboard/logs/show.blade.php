@@ -27,8 +27,15 @@
                     @endforeach
 
                     <h2 class="mt-3 text-success">Result</h2>
+
                     @foreach($log->result as $key => $data)
-                    <p>{{ $data }}</p>
+                        @if(is_array($data))
+                            @foreach($data as $k => $d)
+                            <p>{{ $k }}: {{ $d }}</p>
+                            @endforeach
+                        @else
+                            <p>{{ $data }}</p>
+                        @endif
                     @endforeach
 
                     <a href="{{ url()->previous() }}" class="btn btn-success mt-3">{{ _('Back') }}</a>

@@ -40,7 +40,7 @@ class Log extends Authenticatable
         $log->status = $status;
         $log->code = $code;
         $log->data = json_encode($data);
-        $log->result = json_encode($result);
+        $log->result = $result;
         $log->save();
     }
 }
