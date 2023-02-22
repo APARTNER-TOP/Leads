@@ -38,125 +38,58 @@ class ApiController extends Controller
         );
 
         $json = Api::createJSON($request->all());
+        $response = Http::post(env('API_SANDBOX') ? self::$api_sandbox : self::$api_production, json_decode($json));
+        $response_json = json_encode($response->body());
 
-        if(env('API_SANDBOX')) {
-            //! sandbox
-            $response = Http::post(self::$api_sandbox, $json);
+        //! throw error
+        if ($response->failed()) {
+            $res = json_decode($response->body());
 
-            //! throw error
-            if($response->failed()) {
-                $res = json_decode($response->body());
+            $status  = 'error';
+            $code    = 423;
+            $message = 'Unknown error';
 
-                $status = 'error';
-                $code = 423;
-                $message = 'Unknown error';
+            if (isset($res->Message)) {
+                $message = $res->Message;
 
-                if (isset($res->Message)) {
-                    $message = $res->Message;
+                if ($res->Message == 'Lead could not be processed, here are the details : These fields are required but are missing values in the incoming message: AuthKey') {
+                    Log::saveData($status, $code, $request->all(), $response_json);
 
-                    if($res->Message == 'Lead could not be processed, here are the details : These fields are required but are missing values in the incoming message: AuthKey') {
-                        Log::saveData($status, $code, $request->all(), $response->body());
+                    return back()
+                        ->withInput()
+                        ->with('error_key', $message . ' or an invalid authorization key');
+                }
+            } elseif (isset($res->error->message)) {
+                $message = $res->error->message;
+                $code    = $res->error->code;
+            } else {
+                if (isset($res->AuthKey) && $res->AuthKey == 'AuthKey is invalid. AuthKey is required.') {
+                    $message = 'AuthKey is invalid. AuthKey is required.';
 
-                        return back()
-                            ->withInput()
-                            ->with('error_key', $message .' or an invalid authorization key');
-                    }
-                } elseif (isset($res->error->message)) {
-                    $message = $res->error->message;
-                    $code = $res->error->code;
-                } else {
-                    if($res->AuthKey == 'AuthKey is invalid. AuthKey is required.') {
-                        $message = 'AuthKey is invalid. AuthKey is required.';
+                    Log::saveData($status, $code, $request->all(), $response_json);
 
-                        Log::saveData($status, $code, $request->all(), $response->body());
-
-                        return back()
-                            ->withInput()
-                            ->with('error_key', $message);
-                    }
-
-                    $message = $res->error->message;
+                    return back()
+                        ->withInput()
+                        ->with('error_key', $message);
                 }
 
-                Log::saveData($status, $code, $request->all(), $response->body());
-
-                return back()
-                    ->withInput()
-                    ->with('error', $message);
+                $message = $res->error->message ?? $message;
             }
 
-            //* Success send form
-            $status = 'success';
-            $code = 200;
-            $message = $response->body();
-            $message = 'Data sent successfully';
+            Log::saveData($status, $code, $request->all(), $response_json);
 
-            Log::saveData($status, $code, $request->all(), $response->body());
-        } else {
-            //! production
-            $json = json_decode($json);
-            $client =new Client();
-
-            $response = $client->post(self::$api_production, [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                ],
-                'json' => $json
-            ]);
-
-            $result = $response->getBody()->getContents();
-            $result_json = json_encode($result);
-
-            //! throw error
-            if (!$response->getReasonPhrase()) {
-                $res = json_decode($result);
-
-                $status = 'error';
-                $code = 423;
-                $message = 'Unknown error';
-
-                if (isset($res->Message)) {
-                    $message = $res->Message;
-
-                    if ($res->Message == 'Lead could not be processed, here are the details : These fields are required but are missing values in the incoming message: AuthKey') {
-                        Log::saveData($status, $code, $request->all(), $result_json);
-
-                        return back()
-                            ->withInput()
-                            ->with('error_key', $message . ' or an invalid authorization key');
-                    }
-                } elseif (isset($res->error->message)) {
-                    $message = $res->error->message;
-                    $code = $res->error->code;
-                } else {
-                    if ($res->AuthKey == 'AuthKey is invalid. AuthKey is required.') {
-                        $message = 'AuthKey is invalid. AuthKey is required.';
-
-                        Log::saveData($status, $code, $request->all(), $result_json);
-
-                        return back()
-                            ->withInput()
-                            ->with('error_key', $message);
-                    }
-
-                    $message = $res->error->message;
-                }
-
-                Log::saveData($status, $code, $request->all(), $result_json);
-
-                return back()
-                    ->withInput()
-                    ->with('error', $message);
-            }
-
-            //* Success send form
-            $status = 'success';
-            $code = 200;
-            $message = $result;
-            $message = 'Data sent successfully';
-
-            Log::saveData($status, $code, $request->all(), $result_json);
+            return back()
+                ->withInput()
+                ->with('error', $message);
         }
+
+        //* Success send form
+        $status  = 'success';
+        $code    = 200;
+        $message = $response->body();
+        $message = 'Data sent successfully';
+
+        Log::saveData($status, $code, $request->all(), $response_json);
 
         return back()->with('success', $message);
     }
