@@ -1,4 +1,7 @@
 {
+    "engines": {
+        "npm": "~8.19.2"
+    },
     "private": true,
     "scripts": {
         "dev": "vite",
