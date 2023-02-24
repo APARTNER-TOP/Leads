@@ -20,9 +20,9 @@ use App\Models\Key;
 
 Route::middleware('guest')->group(function () {
 
-    // Route::get('/', function () {
-    //     return view('welcome');
-    // });
+    Route::get('/', function () {
+        return view('login');
+    });
 
     if(!DB::connection()->getPdo() || DB::connection()->getDatabaseName()  == 'forge' || !DB::connection()->getDatabaseName()) {
         Route::get('/', function () {
