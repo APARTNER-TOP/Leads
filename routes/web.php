@@ -20,8 +20,7 @@ use App\Models\Key;
 
 Route::middleware('guest')->group(function () {
     if(DB::connection()->getDatabaseName()  == 'forge') {
-        Route::get('/', [AuthenticatedSessionController::class, 'create'])
-                    ->name('login');
+        return view('welcome');
     } else if(DB::connection()->getDatabaseName()) {
         $user_count = User::count() ?? 0;
 
