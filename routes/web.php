@@ -20,27 +20,27 @@ use App\Models\Key;
 
 Route::middleware('guest')->group(function () {
 
-    Route::get('/', function () {
-        return view('welcome');
-    });
+    // Route::get('/', function () {
+    //     return view('welcome');
+    // });
 
-    // if(!DB::connection()->getPdo() || DB::connection()->getDatabaseName()  == 'forge' || !DB::connection()->getDatabaseName()) {
-    //     Route::get('/', function () {
-    //         return view('welcome');
-    //     });
-    // } else if(DB::connection()->getDatabaseName()) {
-    //     $user_count = User::count() ?? 0;
+    if(!DB::connection()->getPdo() || DB::connection()->getDatabaseName()  == 'forge' || !DB::connection()->getDatabaseName()) {
+        Route::get('/', function () {
+            return view('welcome');
+        });
+    } else if(DB::connection()->getDatabaseName()) {
+        $user_count = User::count() ?? 0;
 
-    //     if(!$user_count) {
-    //         Route::get('/', [RegisteredUserController::class, 'create'])
-    //                 ->name('register');
+        if(!$user_count) {
+            Route::get('/', [RegisteredUserController::class, 'create'])
+                    ->name('register');
 
-    //         Route::post('register', [RegisteredUserController::class, 'store']);
-    //     } else {
-    //         Route::get('/', [AuthenticatedSessionController::class, 'create'])
-    //                 ->name('login');
-    //     }
-    // }
+            Route::post('register', [RegisteredUserController::class, 'store']);
+        } else {
+            Route::get('/', [AuthenticatedSessionController::class, 'create'])
+                    ->name('login');
+        }
+    }
 });
 
 Route::get('/dashboard', function () {
