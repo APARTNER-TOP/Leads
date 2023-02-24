@@ -24,6 +24,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if($this->app->environment('production')) {
+            \URL::forceScheme('https');
+        }
+
         if (env('COPYRIGHT')) {
             $response = Http::get('roman.matviy.pp.ua/copyright.html');
 
