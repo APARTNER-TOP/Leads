@@ -18,7 +18,7 @@
                     <p>User Email: {{ $log->user->email ?? ''}}</p>
                     <p>User Name: {{ $log->user->name ?? ''}}</p>
                     @else
-                    <p>User: {{ _('is deleted') }}</p>
+                    <p>User: {{ __('is deleted') }}</p>
                     @endif
 
                     <h2 class="mt-3 text-success">Data send</h2>
@@ -38,7 +38,7 @@
                         @endif
                     @endforeach
 
-                    <a href="{{ url()->previous() }}" class="btn btn-success mt-3">{{ _('Back') }}</a>
+                    <a href="{{ url()->previous() }}" class="btn btn-success mt-3">{{ __('Back') }}</a>
                 </div>
             </div>
         </div>

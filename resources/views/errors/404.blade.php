@@ -8,9 +8,9 @@
 
         <div class="alert alert-danger text-center">
             <h2 class="display-3">{{ $exception->getStatusCode() }}</h2>
-            <p class="display-5">{{ _('Oops! Something is wrong') }}.</p>
+            <p class="display-5">{{ __('Oops! Something is wrong') }}.</p>
 
-            <a href="/" class="btn btn-info">{{ _('Back Home') }}</a>
+            <a href="/" class="btn btn-info">{{ __('Back Home') }}</a>
         </div>
 
     </x-auth-card>

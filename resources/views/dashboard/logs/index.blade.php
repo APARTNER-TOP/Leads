@@ -14,15 +14,15 @@
                         @foreach($logs as $log)
                             <li class="mt-2 d-flex">
                                 <div class="col-md-3 col-sm-6 col-auto overflow-hidden">
-                                {{ _('ID') }}: {{ $log->id }}
+                                {{ __('ID') }}: {{ $log->id }}
                                 {{ isset($log->user->id) ? $log->user->email : 'User is deleted' }}
                                     <br>
-                                    {{ _('Date') }}: {{ $log->created_at }}
+                                    {{ __('Date') }}: {{ $log->created_at }}
                                     <p class="@if($log->status == 'error') text-danger @else text-success @endif">{{ $log->status }}</p>
                                 </div>
 
                                 <div class="col-auto">
-                                    <a href="{{ route('logs.show', $log->id) }}" class="btn btn-warning ml-2 mr-2">{{ _('Show') }}</a>
+                                    <a href="{{ route('logs.show', $log->id) }}" class="btn btn-warning ml-2 mr-2">{{ __('Show') }}</a>
                                 </div>
                             </li>
                         @endforeach
