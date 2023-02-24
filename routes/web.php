@@ -19,15 +19,10 @@ use App\Models\Key;
 */
 
 Route::middleware('guest')->group(function () {
-    // Route::get('/', function () {
-    //     return view('welcome');
-    // });
-
-    if(DB::connection()->getDatabaseName()  == 'forge' || !DB::connection()->getDatabaseName()) {
+    if(!DB::connection()->getPdo() || DB::connection()->getDatabaseName()  == 'forge' || !DB::connection()->getDatabaseName()) {
         Route::get('/', function () {
             return view('welcome');
         });
-
     } else if(DB::connection()->getDatabaseName()) {
         $user_count = User::count() ?? 0;
 
