@@ -12,7 +12,7 @@
             </select>
 
             @if(false && !$errors->get('key'))
-                <p>{{ _('required field')}}</p>
+                <p>{{ __('required field')}}</p>
             @endif
 
             @if(session('error_key'))
@@ -29,7 +29,7 @@
             <x-text-input id="first_name" name="first_name" type="text" class="mt-1 block w-full" :value="old('first_name')" required autofocus autocomplete="first_name" />
 
             @if(false && !$errors->get('first_name'))
-                <p>{{ _('required field')}}</p>
+                <p>{{ __('required field')}}</p>
             @endif
 
             <x-input-error class="mt-2" :messages="$errors->get('first_name')" />
@@ -62,9 +62,9 @@
         <div class="mt-2 mb-2">
             <x-input-label for="transport_type" :value="__('Transport type')" />
             <select id="transport_type" name="transport_type" class="form-control rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full">
-                <option value="1" @if(old('transport_type') == 1) selected @endif>{{ _('Open') }}</option>
-                <option value="2" @if(old('transport_type') == 2) selected @endif>{{ _('Enclosed') }}</option>
-                <option value="3" @if(old('transport_type') == 3) selected @endif>{{ _('Driveaway') }}</option>
+                <option value="1" @if(old('transport_type') == 1) selected @endif>{{ __('Open') }}</option>
+                <option value="2" @if(old('transport_type') == 2) selected @endif>{{ __('Enclosed') }}</option>
+                <option value="3" @if(old('transport_type') == 3) selected @endif>{{ __('Driveaway') }}</option>
             </select>
             <x-input-error class="mt-2" :messages="$errors->get('transport_type')" />
         </div>
@@ -125,8 +125,8 @@
         <div class="mt-2 mb-2">
             <x-input-label for="vehicle_inop" :value="__('Vehicle inop')" />
             <select id="vehicle_inop" name="vehicle_inop" class="form-control rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full">
-                <option value="0" @if(old('vehicle_inop') == 0) selected @endif>{{ _('No') }}</option>
-                <option value="1" @if(old('vehicle_inop') == 1) selected @endif>{{ _('Yes') }}</option>
+                <option value="0" @if(old('vehicle_inop') == 0) selected @endif>{{ __('No') }}</option>
+                <option value="1" @if(old('vehicle_inop') == 1) selected @endif>{{ __('Yes') }}</option>
             </select>
             <x-input-error class="mt-2" :messages="$errors->get('vehicle_inop')" />
         </div>
