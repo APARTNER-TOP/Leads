@@ -1,5 +1,5 @@
 <section>
-    <form method="post" action="{{ route('send') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('api.send1') }}" class="mt-6 space-y-6">
         @csrf
         @method('post')
 
@@ -53,7 +53,7 @@
             <x-input-error class="mt-2" :messages="$errors->get('phone')" />
         </div>
 
-        <div class="mt-2 mb-2" id="date-container">
+        <div class="mt-2 mb-2" id="lead1_date_container">
             <x-input-label for="ship_date" :value="__('Ship date')" />
             <x-text-input id="ship_date" class="date-picker" name="ship_date" type="text" class="mt-1 block w-full" :value="old('ship_date')" required autofocus autocomplete="ship_date" />
             <x-input-error class="mt-2" :messages="$errors->get('ship_date')" />

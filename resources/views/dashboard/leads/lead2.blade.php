@@ -1,7 +1,7 @@
-<!-- <x-app-layout>
+<x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Leads') }} 2
         </h2>
     </x-slot>
 
@@ -11,16 +11,16 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div class="max-w-xl">
 
-                        @if (count($keys) === 0)
+                        @if (count($lead_sources) === 0)
                             @if(Auth::user()->admin === 1)
-                                <a href="{{ route('key.create') }}" class="btn btn-info">Please create key</a>
+                                <a href="{{ route('lead_source.create') }}" class="btn btn-info">Please create lead source</a>
                             @endif
                         @else
-                        @include('components.form1')
+                        @include('components.form2')
                         @endif
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</x-app-layout> -->
+</x-app-layout>

@@ -12,14 +12,18 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                    <x-nav-link :href="route('leads.lead1')" :active="request()->routeIs('leads.lead1') || request()->routeIs('dashboard')">
+                        {{ __('Leads 1') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('leads.lead2')" :active="request()->routeIs('leads.lead2')">
+                        {{ __('Leads 2') }}
                     </x-nav-link>
 
                     @if(Auth::user()->admin === 1)
-                        <x-nav-link :href="route('key.index')" :active="request()->routeIs('key.index')">
+                        <!-- <x-nav-link :href="route('key.index')" :active="request()->routeIs('key.index')">
                             {{ __('Keys') }}
-                        </x-nav-link>
+                        </x-nav-link> -->
 
                         <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
                             {{ __('Users') }}
@@ -27,6 +31,10 @@
 
                         <x-nav-link :href="route('logs.index')" :active="request()->routeIs('logs.index')">
                             {{ __('Logs') }}
+                        </x-nav-link>
+
+                        <x-nav-link :href="route('settings.index')" :active="request()->routeIs('settings.index')">
+                            {{ __('Settings') }}
                         </x-nav-link>
                     @endif
                 </div>
@@ -77,14 +85,18 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+            <x-responsive-nav-link :href="route('leads.lead1')" :active="request()->routeIs('leads.lead1') || request()->routeIs('dashboard')">
+                {{ __('Leads 1') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('leads.lead2')" :active="request()->routeIs('lead.lead2')">
+                {{ __('Leads 2') }}
             </x-responsive-nav-link>
 
             @if(Auth::user()->admin === 1)
-                <x-responsive-nav-link :href="route('key.index')" :active="request()->routeIs('key.index')">
+                <!-- <x-responsive-nav-link :href="route('key.index')" :active="request()->routeIs('key.index')">
                     {{ __('Keys') }}
-                </x-responsive-nav-link>
+                </x-responsive-nav-link> -->
 
                 <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
                     {{ __('Users') }}
@@ -92,6 +104,10 @@
 
                 <x-responsive-nav-link :href="route('logs.index')" :active="request()->routeIs('logs.index')">
                     {{ __('Logs') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('settings.index')" :active="request()->routeIs('settings.index')">
+                    {{ __('Settings') }}
                 </x-responsive-nav-link>
             @endif
         </div>

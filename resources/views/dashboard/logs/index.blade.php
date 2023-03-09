@@ -12,7 +12,14 @@
                     @if(count($logs) > 0)
                     <ul>
                         @foreach($logs as $log)
+
                             <li class="mt-2 d-flex">
+                                <div class="col-auto">
+                                    <span style="background: yellow; padding: 10px; margin-right: 5px;">
+                                        Lead {{ $log->api }}
+                                    </span>
+                                </div>
+
                                 <div class="col-md-3 col-sm-6 col-auto overflow-hidden">
                                 {{ __('ID') }}: {{ $log->id }}
                                 {{ isset($log->user->id) ? $log->user->email : 'User is deleted' }}

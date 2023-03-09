@@ -16,7 +16,8 @@ class Log extends Authenticatable
         'status',
         'code',
         'data',
-        'result'
+        'result',
+        'api'
     ];
 
     public $timestamps = false;
@@ -34,13 +35,14 @@ class Log extends Authenticatable
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
-    public static function saveData($status, $code, $data, $result) {
+    public static function saveData($status, $code, $data, $result, $leads_type = 1) {
         $log = new self;
         $log->user_id = Auth::user()->id;
         $log->status = $status;
         $log->code = $code;
         $log->data = json_encode($data);
         $log->result = $result;
+        $log->api = $leads_type;
         $log->save();
     }
 }
