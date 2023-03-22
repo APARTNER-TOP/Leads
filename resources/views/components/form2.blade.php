@@ -153,6 +153,8 @@
             <x-input-error class="mt-2" :messages="$errors->get('vehicle_model_year')" />
         </div>
 
+        @include ('components.datatimepicker')
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Send') }}</x-primary-button>
 
