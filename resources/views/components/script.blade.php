@@ -23,20 +23,26 @@
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
 <script type="text/javascript">
     $(function () {
-        $('#datetimepicker').on('click', function () {
-            const now = new Date();
-            const currentHours = now.getHours();
-            const currentMinutes = now.getMinutes();
-            const currentTime = currentHours + ':' + currentMinutes;
+        dataTimePicker();
 
-            $('#datetimepicker').datetimepicker({
-                format: 'Y-m-d H:i',
-                minDate: 0,
-                minTime: currentTime,
-                step: 1,
-            });
+        $('#datetimepicker').on('click', function () {
+            dataTimePicker();
         });
     });
+
+    function dataTimePicker() {
+        const now = new Date();
+        const currentHours = now.getHours();
+        const currentMinutes = now.getMinutes();
+        const currentTime = currentHours + ':' + currentMinutes;
+
+        $('#datetimepicker').datetimepicker({
+            format: 'Y-m-d H:i',
+            minDate: 0,
+            minTime: currentTime,
+            step: 1,
+        });
+    }
 </script>
 
 @endif

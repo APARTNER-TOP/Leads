@@ -12,7 +12,9 @@ use App\Http\Controllers\LogController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\LeadSourceController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\QueueController;
 
+//! for guest
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
                 ->name('register');
@@ -22,6 +24,8 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 });
 
+
+//! for auth
 Route::middleware('auth')->group(function () {
 
     //! Keys for leads 1
@@ -41,6 +45,10 @@ Route::middleware('auth')->group(function () {
     // Route::get('dashboard/lead_source', [LeadSourceController::class, 'index'])->name('lead_source.index');
     // Route::get('dashboard/lead_source/create', [LeadSourceController::class, 'create'])->name('lead_source.create');
     // Route::get('dashboard/lead_source/edit/{id}', [LeadSourceController::class, 'edit'])->name('lead_source.edit');
+
+    //! Queues
+    Route::get('dashboard/queues', [QueueController::class, 'index'])->name('queues.index');
+    Route::patch('dashboard/queues/{id}/release', [QueueController::class, 'release'])->name('queue.release');
 
 
     //! Users
