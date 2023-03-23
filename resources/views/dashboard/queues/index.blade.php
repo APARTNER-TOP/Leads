@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Queues') }}
+            {{ __('Queues List') }}
         </h2>
     </x-slot>
 
@@ -13,37 +13,65 @@
                     <!-- <br>
                     <br> -->
 
-                    @if (empty($jobs))
+                    @if (count($jobs) == NULL)
                             <p>{{ __('No queues found') }}</p>
                         @else
 
-                        <ul>
-                            @foreach($jobs as $item)
-                            <li class="mt-2">
-                                <div class="row">
-                                    <div class="col-md-3 col-sm-6">
-                                        <!-- {{ $item->queue }} -->
-                                        {{ explode('|', $item->queue)[0] }}
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">{{ __('ID') }}</th>
+                                <th scope="col">{{ __('Lead') }}</th>
+                                <th scope="col">{{ __('Email') }}</th>
+                                <!-- <th scope="col">{{ __('Attempts') }}</th> -->
+                                <!-- <th scope="col">{{ __('Reserved at') }}</th> -->
+                                <!-- <th scope="col">{{ __('Created at') }}</th> -->
+                                <th scope="col">{{ __('Available at') }}</th>
+                                <th scope="col">{{ __('Actions') }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach ($jobs as $job)
+                                <tr>
+                                    <th scope="row">{{ $job->id }}</th>
+                                    <!-- <td>{ explode('|', $job->queue)[2] }</td> -->
+                                    <!-- <td>{ explode('|', $job->queue)[0] }</td> -->
+                                    <!-- <td>{{ $job->attempts }}</td> -->
+                                    <!-- <td>{{ $job->reserved_at }}</td> -->
+                                    <!-- <td>
+                                        {{ date('Y-m-d H:i', $job->created_at) }}
+                                    </td> -->
+                                    <td>
+                                        {{ date('Y-m-d H:i', $job->available_at) }}
+                                    </td>
+                                    <td>
 
-                                        <?php var_dump(json_decode($item->payload)) ?>
-                                    </div>
+                                    <a href="{{ route('queues.show', $job->id) }}" class="btn btn-success ml-2 mr-2">{{ __('View') }}</a>
 
-                                    <div class="d-fle col-4">
-                                        <a href="{{ route('queues.edit', $item->id) }}" class="btn btn-warning ml-2 mr-2">{{ __('Edit') }}</a>
+                                    <a href="{{ route('queues.edit', $job->id) }}" class="btn btn-warning ml-2 mr-2">{{ __('Edit') }}</a>
 
-                                        <form action="{{ route('queues.destroy', $item->id) }}" method="POST" class="btn btn-danger">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit">
-                                                {{ __('Delete') }}
-                                            </button>
-                                        </form>
+                                    <form action="{{ route('queues.destroy', $job->id) }}" method="POST" class="btn btn-danger">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit">
+                                            {{ __('Delete') }}
+                                        </button>
+                                    </form>
 
-                                    </div>
-                                </div>
-                            </li>
+                                        @if (false && $job->reserved_at != null)
+                                            <form action="{{ route('queue.release', $job->id) }}" method="POST">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="btn btn-secondary"
+                                                        onclick="return confirm('{{ __('Are you sure to release this job?') }}')"><i
+                                                            class="fa fa-undo"></i></button>
+                                            </form>
+                                        @endif
+                                    </td>
+                                </tr>
                             @endforeach
-                        </ul>
+                            </tbody>
+                        </table>
 
                         {{ $jobs->links() }}
 
