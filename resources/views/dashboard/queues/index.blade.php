@@ -22,32 +22,31 @@
                             <li class="mt-2">
                                 <div class="row">
                                     <div class="col-md-3 col-sm-6">
-                                        <!-- {{ $item->name }} -->
-                                        {{ $item->email }}
+                                        <!-- {{ $item->queue }} -->
+                                        {{ explode('|', $item->queue)[0] }}
 
-                                        @if($item->admin)
-                                        <p class="text-danger ml-2">admin</p>
-                                        @else
-                                        <p class="text-success ml-2">user</p>
-                                        @endif
+                                        <?php var_dump(json_decode($item->payload)) ?>
                                     </div>
 
                                     <div class="d-fle col-4">
-                                        <a href="{{ route('users.edit', $item->id) }}" class="btn btn-warning ml-2 mr-2">{{ __('Edit') }}</a>
+                                        <a href="{{ route('queues.edit', $item->id) }}" class="btn btn-warning ml-2 mr-2">{{ __('Edit') }}</a>
 
-                                        @if($item->id > 1)
-                                        <form method="POST" class="btn btn-danger" action="{{ route('users.delete', $item->id) }}">
+                                        <form action="{{ route('queues.destroy', $item->id) }}" method="POST" class="btn btn-danger">
                                             @csrf
-                                            <button>
+                                            @method('DELETE')
+                                            <button type="submit">
                                                 {{ __('Delete') }}
                                             </button>
                                         </form>
-                                        @endif
+
                                     </div>
                                 </div>
                             </li>
                             @endforeach
                         </ul>
+
+                        {{ $jobs->links() }}
+
                     @endif
                 </div>
             </div>
