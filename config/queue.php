@@ -1,7 +1,7 @@
 <?php
 
 $php_version = PHP_VERSION;
-if (version_compare($php_version, '8.1.0', '>=')) {
+if (version_compare($php_version, '8.0.0', '>=')) {
     $timezone = 'Europe/Kiev'; // for PHP 8.1
 } else {
     $timezone = 'Europe/Kyiv'; // for PHP 8.0 and lower
