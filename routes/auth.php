@@ -47,8 +47,9 @@ Route::middleware('auth')->group(function () {
     // Route::get('dashboard/lead_source/edit/{id}', [LeadSourceController::class, 'edit'])->name('lead_source.edit');
 
     //! Queues
-    Route::get('dashboard/queues', [QueueController::class, 'index'])->name('queues.index');
-    Route::patch('dashboard/queues/{id}/release', [QueueController::class, 'release'])->name('queue.release');
+    // Route::get('dashboard/queues', [QueueController::class, 'index'])->name('queues.index');
+    // Route::patch('dashboard/queues/{id}/release', [QueueController::class, 'release'])->name('queue.release');
+    Route::resource('dashboard/queues', QueueController::class);
 
 
     //! Users

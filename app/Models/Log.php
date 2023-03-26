@@ -36,8 +36,11 @@ class Log extends Authenticatable
     }
 
     public static function saveData($status, $code, $data, $result, $leads_type = 1) {
+        $user_id = $data['user_id'];
+
         $log = new self;
-        $log->user_id = Auth::user()->id;
+        $log->user_id = isset($user_id) ? $user_id : Auth::user()->id;
+        $log->user_id = $user_id;
         $log->status = $status;
         $log->code = $code;
         $log->data = json_encode($data);

@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 
+use App\Models\Key;
+use App\Models\LeadSource;
+
 class QueueController extends Controller
 {
     /**
@@ -17,29 +20,14 @@ class QueueController extends Controller
     {
         $jobs = DB::table('jobs')->paginate(10);
 
+        foreach ($jobs as $job) :
+            $job->payload = json_decode($job->payload);
+            $job->data = unserialize($job->payload->data->command);
+            $job->data = $job->data->data;
+        endforeach;
+
         return view('dashboard.queues.index', compact('jobs'));
     }
-
-    // /**
-    //  * Show the form for creating a new resource.
-    //  *
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function create()
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Store a newly created resource in storage.
-    //  *
-    //  * @param  \Illuminate\Http\Request  $request
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function store(Request $request)
-    // {
-    //     //
-    // }
 
     /**
      * Display the specified resource.
@@ -49,7 +37,12 @@ class QueueController extends Controller
      */
     public function show($id)
     {
-        //
+        // $job = DB::table('jobs')->where('id', $id)->first();
+        // $job->payload = json_decode($job->payload);
+        // $job->data = unserialize($job->payload->data->command);
+        // $job->data = $job->data->data;
+
+        // return view('dashboard.queues.show', compact('job'));
     }
 
     /**
@@ -60,7 +53,45 @@ class QueueController extends Controller
      */
     public function edit($id)
     {
-        dd($id);
+        $job = DB::table('jobs')->where('id', $id)->first();
+
+        if(!$job) {
+            return back();
+        }
+
+        $job->payload = json_decode($job->payload);
+        $job->data = unserialize($job->payload->data->command);
+        $job->data = $job->data->data;
+
+        $lead_type = $job->data['lead_type'];
+
+        if($lead_type == 1) {
+            $keys = Key::all();
+
+            $key_id = DB::table('keys')
+                        ->select('id')
+                        ->where('key', '=', $job->data['key'])
+                        ->first();
+
+            if (isset($key_id)) {
+                $key_id = $key_id->id;
+                $job->data['key_id'] = $key_id;
+            }
+
+            return view('dashboard.leads.lead1', compact('job', 'keys'));
+        }
+
+        if($lead_type == 2) {
+            $lead_sources = LeadSource::all();
+
+            return view('dashboard.leads.lead2', compact('job', 'lead_sources'));
+        }
+
+        $message = 'Invalid lead type';
+
+        return back()
+                ->withInput()
+                ->with('error', $message);
     }
 
     // /**
@@ -83,13 +114,13 @@ class QueueController extends Controller
      */
     public function destroy($id)
     {
-        if(DB::table('jobs')->where('id', $id)->delete()) {
-            $message = 'Queue deleted successfully';
-            return back()->with('success', $message);
-        }
+        // if(DB::table('jobs')->where('id', $id)->delete()) {
+        //     $message = 'Queue deleted successfully';
+        //     return back()->with('success', $message);
+        // }
 
-        $message = 'Queue deletion error';
+        // $message = 'Queue deletion error';
 
-        return back()->with('error', $message);
+        // return back()->with('error', $message);
     }
 }

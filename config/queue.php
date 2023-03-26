@@ -1,5 +1,12 @@
 <?php
 
+$php_version = PHP_VERSION;
+if (version_compare($php_version, '8.1.0', '>=')) {
+    $timezone = 'Europe/Kiev'; // for PHP 8.1
+} else {
+    $timezone = 'Europe/Kyiv'; // for PHP 8.0 and lower
+}
+
 return [
 
     /*
@@ -40,6 +47,7 @@ return [
             'queue' => 'default',
             'retry_after' => 90,
             'after_commit' => false,
+            'timezone' => $timezone
         ],
 
         'beanstalkd' => [

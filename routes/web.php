@@ -16,6 +16,11 @@ use App\Models\Key;
 |
 */
 
+//! run queue php artisan queue:work --max-jobs=10
+Route::get('/queue_run', function () {
+    Artisan::call('queue:work', ['--tries' => 5]);
+});
+
 Route::middleware('guest')->group(function () {
 
     Route::get('/', function () {

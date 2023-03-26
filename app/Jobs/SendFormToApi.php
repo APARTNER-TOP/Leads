@@ -1,27 +1,38 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Jobs;
 
-use Illuminate\Http\Request;
-// use App\Models\User;
-use App\Models\Key;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use App\Models\Log;
 use App\Models\Api;
 use App\Models\LeadSource;
-use GuzzleHttp\Client;
-use Carbon\Carbon;
 
-use App\Jobs\SendFormToApi;
-use Illuminate\Support\Facades\Auth;
+// use Illuminate\Contracts\Queue\Job; //! don't need
 
-
-class ApiController extends Controller
+class SendFormToApi implements ShouldQueue
 {
-    protected static $name_queue = 'default';
-    // protected static $name_queue = 'apartner.pro';
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public $tries = 5;
+
+    public $data;
+
+    /**
+     * Create a new job instance.
+     *
+     * @return void
+     */
+    public function __construct($data)
+    {
+        $this->data = $data;
+    }
 
     //! api lead 1
     protected static $api1_sandbox = 'https://api.batscrm.com/leads-sandbox/sandbox';
@@ -32,52 +43,9 @@ class ApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function send1(Request $request) {
-        $leads_type = 1;
-
-        $request->validate(
-            [
-                'job_id' =>'nullable|integer',
-                'key' =>'required|string|min:36|max:36',
-                'first_name' =>'required|string',
-                'email' =>'required|email',
-                'phone' =>'required|string',
-                'ship_date' =>'required|date|date_format:m/d/Y',
-                'transport_type' => 'required|integer|min:1',
-                'origin_postal_code' =>'required|integer',
-                'destination_postal_code' =>'required',
-                'vehicle_inop' => 'required|integer',
-                'vehicle_make' => 'required|string',
-                'vehicle_model' => 'required|string',
-                'vehicle_model_year' => 'required|integer|digits:4|min:1900|max:'.(date("Y")),
-                'datefordeparture' => 'nullable|date|date_format:Y-m-d H:i|after_or_equal:' . date('Y-m-d H:i'),
-            ]
-        );
-
-        if (isset($request->job_id)) {
-            DB::table('jobs')->where('id', '=', $request->job_id)->delete();
-        }
-
-        $date = Carbon::create($request->datefordeparture);
-
-        $data = $request->all();
-        $data['created_data'] = date('Y-m-d H:i');
-        $data['lead_type'] = $leads_type;
-        $data['user_id'] = Auth::user()->id;
-
-        if(isset($request->datefordeparture)) {
-            dispatch(new SendFormToApi($data))->delay($date)->onQueue(static::$name_queue);
-
-            $message = 'Data sent to queue successfully';
-
-            // return back()->with('success', $message);
-            return redirect('/dashboard/')->with('success', $message);
-            exit;
-        }
-
-        //! execution code
-
-        $json = Api::createJSON($request->all());
+    public function send1($request)
+    {
+        $json = Api::createJSON($request);
         $response = Http::post(config('settings.api_sandbox') ? self::$api1_sandbox : self::$api1_production, json_decode($json));
         $response_json = json_encode($response->body());
 
@@ -93,11 +61,12 @@ class ApiController extends Controller
                 $message = $res->Message;
 
                 if ($res->Message == 'Lead could not be processed, here are the details : These fields are required but are missing values in the incoming message: AuthKey') {
-                    Log::saveData($status, $code, $data, $response_json);
+                    Log::saveData($status, $code, $request, $response_json);
 
                     return back()
-                        ->withInput()
-                        ->with('error_key', $message . ' or an invalid authorization key');
+                    ->withInput()
+                    ->with('error_key', $message . ' or an invalid authorization key');
+                    return false;
                 }
             } elseif (isset($res->error->message)) {
                 $message = $res->error->message;
@@ -106,21 +75,23 @@ class ApiController extends Controller
                 if (isset($res->AuthKey) && $res->AuthKey == 'AuthKey is invalid. AuthKey is required.') {
                     $message = 'AuthKey is invalid. AuthKey is required.';
 
-                    Log::saveData($status, $code, $data, $response_json);
+                    Log::saveData($status, $code, $request, $response_json);
 
                     return back()
                         ->withInput()
                         ->with('error_key', $message);
+                    return false;
                 }
 
                 $message = $res->error->message ?? $message;
             }
 
-            Log::saveData($status, $code, $data, $response_json);
+            Log::saveData($status, $code, $request, $response_json);
 
             return back()
                 ->withInput()
                 ->with('error', $message);
+            return false;
         }
 
         //* Success send form
@@ -129,72 +100,26 @@ class ApiController extends Controller
         $message = $response->body();
         $message = 'Data sent successfully';
 
-        Log::saveData($status, $code, $data, $response_json);
+        Log::saveData($status, $code, $request, $response_json);
 
         return back()->with('success', $message);
+        return true;
     }
-
 
     //! api lead 2
     protected static $api2 = 'http://64.227.60.37/api/email/lead';
+    // protected static $api2 = 'http://64.227.60.37/api/email/leads'; //! for test
 
     /**
-     * Leads 2 Api send.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function send2(Request $request)
+      * Leads 2 Api send.
+      *
+      * @return \Illuminate\Http\Response
+      */
+    public function send2($request)
     {
         $leads_type = 2;
 
-        $request->validate(
-            [
-                'lead_source'        => 'required|integer',
-                'first_name'         => 'required|string',
-                'last_name'          => 'required|string',
-                'email'              => 'required|email',
-                'phone'              => 'required|string',
-                'ship_date'          => 'required|date|date_format:Y-m-d',
-                'transport_type'     => 'required|integer|min:1',
-                'origin_city'        => 'required|string',
-                'origin_state'       => 'required|string',
-                'origin_zip'         => 'required|integer',
-                'destination_city'   => 'required|string',
-                'destination_state'  => 'required|string',
-                'destination_zip'    => 'required|integer',
-                'vehicle_make'       => 'required|string',
-                'vehicle_model'      => 'required|string',
-                'vehicle_model_year' => 'required|integer|digits:4|min:1900|max:' . (date('Y')),
-                'datefordeparture'   => 'nullable|date|date_format:Y-m-d H:i|after_or_equal:' . date('Y-m-d H:i'),
-            ]
-        );
-
-        if (isset($request->job_id)) {
-            DB::table('jobs')->where('id', '=', $request->job_id)->delete();
-        }
-
-        $token  = $request->_token;
-        $json   = Api::createJSON($request->all(), 2);
-        $result = $request->all();
-
-        $date = Carbon::create($request->datefordeparture);
-
-        $result                 = $request->all();
-        $result['created_data'] = date('Y-m-d H:i');
-        $result['lead_type']    = $leads_type;
-        $result['user_id']      = Auth::user()->id;
-
-        if (isset($request->datefordeparture)) {
-            dispatch(new SendFormToApi($result))->delay($date)->onQueue(static::$name_queue);
-
-            $message = 'Data sent to queue successfully';
-
-            // return back()->with('success', $message);
-            return redirect('/dashboard/')->with('success', $message);
-            exit;
-        }
-
-        //! execution code
+        $result = $request;
 
         $lead_source = LeadSource::find($result['lead_source']);
         //! "Lead Source Name": "Lead Artisans\\/CarShip.com",
@@ -277,47 +202,83 @@ class ApiController extends Controller
             Log::saveData($status, $code, $result, $response, $leads_type);
 
             return back()->with('success', $message);
+            return true;
         } else {
             Log::saveData($status, $code, $result, $response, $leads_type);
 
             return back()
                 ->withInput()
                 ->with('error', $message);
+            return false;
         }
-        //! end curl
+         //! end curl
 
 
-        //! start first example code
-        // $response = Http::post(env('API_SANDBOX') ? self::$api2 : self::$api2, json_decode($json));
+         //! start first example code
+         // $response = Http::post(env('API_SANDBOX') ? self::$api2 : self::$api2, json_decode($json));
 
-        // $response_json = json_encode($response->body());
+         // $response_json = json_encode($response->body());
 
-        // //! throw error
-        // if ($response->failed()) {
-        //     $res = json_decode($response->body());
+         // //! throw error
+         // if ($response->failed()) {
+         //     $res = json_decode($response->body());
 
-        //     $status  = 'error';
-        //     $code    = $res->status;
-        //     $message = 'error';
-        //     $message = $res->message;
+         //     $status  = 'error';
+         //     $code    = $res->status;
+         //     $message = 'error';
+         //     $message = $res->message;
 
-        //     Log::saveData($status, $code, $result, $response_json, $leads_type);
+         //     Log::saveData($status, $code, $result, $response_json, $leads_type);
 
-        //     return back()
-        //         ->withInput()
-        //         ->with('error', $message);
-        // }
+         //     return back()
+         //         ->withInput()
+         //         ->with('error', $message);
+         // }
 
-        // //* Success send form
-        // $status  = 'success';
-        // $code    = 200;
-        // $message = $response->body();
-        // $message = 'Data sent successfully';
+         // //* Success send form
+         // $status  = 'success';
+         // $code    = 200;
+         // $message = $response->body();
+         // $message = 'Data sent successfully';
 
-        // Log::saveData($status, $code, $result, $response_json, $leads_type);
+         // Log::saveData($status, $code, $result, $response_json, $leads_type);
 
-        // return back()->with('success', $message);
+         // return back()->with('success', $message);
 
-        //! end first example code
+         //! end first example code
+    }
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        $lead_type = $this->data['lead_type'];
+
+        try {
+            if($lead_type == 1) {
+                $this->send1($this->data);
+            } else {
+                $this->send2($this->data);
+            }
+        } catch (\Exception $e) {
+            // mark the job as failed and set the exit code
+            $this->data->fail($e);
+            $this->data->delete();
+            $this->failed($e); // re-queue the job with a delay
+            return 1; // set exit code to 1
+        }
+
+        // info($this->data);
+    }
+
+    public function failed($exception)
+    {
+        // Mail::to('admin@example.com')->send(new JobFailedNotification($exception, $this->getExitCode()));
+
+        $delay = now()->addMinutes(5);
+        $this->release($delay); // re-queue the job with a delay
     }
 }
