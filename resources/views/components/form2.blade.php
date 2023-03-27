@@ -160,7 +160,7 @@
         @include ('components.datatimepicker')
 
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ isset(isset($job->id)) ? __('Save') : __('Send') }}</x-primary-button>
+            <x-primary-button>{{ isset($job->id) ? __('Save') : __('Send') }}</x-primary-button>
 
             @if (session('status') === 'profile-updated')
                 <p
