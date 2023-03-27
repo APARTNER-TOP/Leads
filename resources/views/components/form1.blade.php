@@ -11,7 +11,7 @@
             <x-input-label for="key" :value="__('Key type')" />
             <select id="type_user" name="key" class="form-control rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full">
                 @foreach($keys as $key)
-                <option value="{{ $key->key }}" @if(old('key') == $key->key || !empty($job) ? $job->data['key_id'] == $key->id : '') selected @endif>{{ $key->name }}</option>
+                <option value="{{ $key->key }}" @if(old('key') == $key->key || isset($job->data) ? $job->data['key_id'] == $key->id : '') selected @endif>{{ $key->name }}</option>
                 @endforeach
             </select>
 
