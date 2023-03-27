@@ -20,7 +20,7 @@ class LeadController extends Controller
 
     public function lead1() {
         $keys = Key::all();
-        $job = null;
+        $job = false;
         $form_js = true;
 
         return view('dashboard.leads.lead1', compact('keys', 'job', 'form_js'));
@@ -28,7 +28,7 @@ class LeadController extends Controller
 
     public function lead2(Request $request) {
         $lead_sources = LeadSource::all();
-        $job = null;
+        $job = false;
         $form_js = true;
 
         return view('dashboard.leads.lead2', compact( 'lead_sources', 'job', 'form_js'));
