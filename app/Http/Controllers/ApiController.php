@@ -56,6 +56,7 @@ class ApiController extends Controller
 
         if (isset($request->job_id)) {
             DB::table('jobs')->where('id', '=', $request->job_id)->delete();
+            \DB::disconnect();
         }
 
         $date = Carbon::create($request->datefordeparture);
@@ -171,6 +172,7 @@ class ApiController extends Controller
 
         if (isset($request->job_id)) {
             DB::table('jobs')->where('id', '=', $request->job_id)->delete();
+            \DB::disconnect();
         }
 
         $token  = $request->_token;

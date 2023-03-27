@@ -19,6 +19,7 @@ class QueueController extends Controller
     public function index()
     {
         $jobs = DB::table('jobs')->paginate(10);
+        \DB::disconnect();
 
         foreach ($jobs as $job) :
             $job->payload = json_decode($job->payload);
@@ -42,6 +43,8 @@ class QueueController extends Controller
         // $job->data = unserialize($job->payload->data->command);
         // $job->data = $job->data->data;
 
+        // \DB::disconnect();
+
         // return view('dashboard.queues.show', compact('job'));
     }
 
@@ -54,6 +57,7 @@ class QueueController extends Controller
     public function edit($id)
     {
         $job = DB::table('jobs')->where('id', $id)->first();
+        \DB::disconnect();
 
         if(!$job) {
             return back();
@@ -72,6 +76,8 @@ class QueueController extends Controller
                         ->select('id')
                         ->where('key', '=', $job->data['key'])
                         ->first();
+
+            \DB::disconnect();
 
             if (isset($key_id)) {
                 $key_id = $key_id->id;
@@ -118,6 +124,8 @@ class QueueController extends Controller
         //     $message = 'Queue deleted successfully';
         //     return back()->with('success', $message);
         // }
+
+        // \DB::disconnect();
 
         // $message = 'Queue deletion error';
 
