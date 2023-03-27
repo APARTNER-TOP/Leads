@@ -30,7 +30,7 @@
 
         <div class="mt-2 mb-2">
             <x-input-label for="first_name" :value="__('First name')" />
-            <x-text-input id="first_name" name="first_name" type="text" class="mt-1 block w-full" :value="old('first_name') ?? isset($job) ? $job->data['first_name'] : ''" required autofocus autocomplete="first_name" />
+            <x-text-input id="first_name" name="first_name" type="text" class="mt-1 block w-full" :value="old('first_name') ?? isset($job->data['first_name']) ? $job->data['first_name'] : ''" required autofocus autocomplete="first_name" />
 
             @if(false && !$errors->get('first_name'))
                 <p>{{ __('required field')}}</p>
@@ -41,19 +41,19 @@
 
         <div class="mt-2 mb-2">
             <x-input-label for="last_name" :value="__('Last name')" />
-            <x-text-input id="last_name" name="last_name" type="text" class="mt-1 block w-full" :value="old('last_name') ?? isset($job) ? $job->data['last_name'] : ''" autofocus autocomplete="last_name" />
+            <x-text-input id="last_name" name="last_name" type="text" class="mt-1 block w-full" :value="old('last_name') ?? isset($job->data['last_name']) ? $job->data['last_name'] : ''" autofocus autocomplete="last_name" />
             <x-input-error class="mt-2" :messages="$errors->get('last_name')" />
         </div>
 
         <div class="mt-2 mb-2">
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email') ?? isset($job) ? $job->data['email'] : ''" required autocomplete="email" />
+            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email') ?? isset($job->data['email']) ? $job->data['email'] : ''" required autocomplete="email" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
         </div>
 
         <div class="mt-2 mb-2">
             <x-input-label for="phone" :value="__('Phone')" />
-            <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone') ?? isset($job) ? $job->data['phone'] : ''" required autofocus autocomplete="phone" />
+            <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone') ?? isset($job->data['phone']) ? $job->data['phone'] : ''" required autofocus autocomplete="phone" />
             <x-input-error class="mt-2" :messages="$errors->get('phone')" />
         </div>
 
