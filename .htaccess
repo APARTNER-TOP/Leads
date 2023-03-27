@@ -4,3 +4,5 @@
 </IfModule>
 
 # php_value date.timezone Europe/Kyiv
+
+php_value mysqli.max_user_connections 50
