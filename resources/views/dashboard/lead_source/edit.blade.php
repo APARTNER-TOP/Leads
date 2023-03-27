@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <form method="POST" action="{{ route('lead_source.update', $key->id) }}">
+                    <form method="POST" action="{{ route('lead_source_update', $key->id) }}">
                         @csrf
                         <div class="mb-2">
                             <label class="block font-medium text-sm text-gray-700" for="name">

@@ -39,8 +39,8 @@ Route::middleware('auth')->group(function () {
     //! Lead source for leads 2
     Route::resource('dashboard/lead_source', LeadSourceController::class);
     Route::post('dashboard/lead_source/store', [LeadSourceController::class, 'store'])->name('lead_source.save');
-    Route::post('dashboard/lead_source/update/{id}', [LeadSourceController::class, 'update'])->name('lead_source.update');
-    Route::post('dashboard/lead_source/delete/{id}', [LeadSourceController::class, 'destroy'])->name('lead_source.delete');
+    Route::post('dashboard/lead_source/update/{id}', [LeadSourceController::class, 'update'])->name('lead_source_update');
+    Route::post('dashboard/lead_source/delete/{id}', [LeadSourceController::class, 'destroy'])->name('lead_source_delete');
 
     // Route::get('dashboard/lead_source', [LeadSourceController::class, 'index'])->name('lead_source.index');
     // Route::get('dashboard/lead_source/create', [LeadSourceController::class, 'create'])->name('lead_source.create');

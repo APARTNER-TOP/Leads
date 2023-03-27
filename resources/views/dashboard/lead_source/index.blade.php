@@ -25,7 +25,7 @@
                                 <div class="col-auto">
                                     <a href="{{ route('lead_source.edit', $lead->id) }}" class="btn btn-warning ml-2 mr-2">{{ __('Edit') }}</a>
 
-                                    <form method="POST" class="btn btn-danger" action="{{ route('lead_source.delete', $lead->id) }}">
+                                    <form method="POST" class="btn btn-danger" action="{{ route('lead_source_delete', $lead->id) }}">
                                         @csrf
                                         <button type="submit">
                                             {{ __('Delete') }}
