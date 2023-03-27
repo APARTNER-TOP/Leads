@@ -33,7 +33,7 @@
 
         <div class="mt-2 mb-2">
             <x-input-label for="first_name" :value="__('First name')" />
-            <x-text-input id="first_name" name="first_name" type="text" class="mt-1 block w-full" :value="old('first_name') ?? isset($job) ? $job->data['first_name'] : ''" required autofocus autocomplete="first_name" />
+            <x-text-input id="first_name" name="first_name" type="text" class="mt-1 block w-full" :value="old('first_name') ?? isset($job->data['first_name']) ? $job->data['first_name'] : ''" required autofocus autocomplete="first_name" />
 
             @if(false && !$errors->get('first_name'))
                 <p>{{ __('required field')}}</p>
