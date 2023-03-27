@@ -3,7 +3,7 @@
         @csrf
         @method('post')
 
-        @if(isset($job))
+        @if(isset($job) && isset($job->id))
             <x-text-input id="job_id" name="job_id" type="hidden" class="mt-1 block w-full" :value="$job->id" readonly="true" />
         @endif
 
