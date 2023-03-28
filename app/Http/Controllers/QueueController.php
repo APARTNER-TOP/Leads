@@ -84,13 +84,13 @@ class QueueController extends Controller
                 $job->data['key_id'] = $key_id;
             }
 
-            return view('dashboard.leads.lead1', compact('job', 'keys'));
+            return view('dashboard.leads.lead', compact('lead_type', 'job', 'keys'));
         }
 
         if($lead_type == 2) {
             $lead_sources = LeadSource::all();
 
-            return view('dashboard.leads.lead2', compact('job', 'lead_sources'));
+            return view('dashboard.leads.lead', compact('lead_type', 'job', 'lead_sources'));
         }
 
         $message = 'Invalid lead type';

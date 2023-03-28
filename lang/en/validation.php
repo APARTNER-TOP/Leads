@@ -179,6 +179,8 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'datefordeparture' => 'date for departure'
+    ],
 
 ];

@@ -19,18 +19,16 @@ class LeadController extends Controller
     }
 
     public function lead1() {
+        $lead_type = 1;
         $keys = Key::all();
-        $job = false;
-        $form_js = true;
 
-        return view('dashboard.leads.lead1', compact('keys', 'job', 'form_js'));
+        return view('dashboard.leads.lead', compact('lead_type', 'keys'));
     }
 
-    public function lead2(Request $request) {
+    public function lead2() {
+        $lead_type = 2;
         $lead_sources = LeadSource::all();
-        $job = false;
-        $form_js = true;
 
-        return view('dashboard.leads.lead2', compact( 'lead_sources', 'job', 'form_js'));
+        return view('dashboard.leads.lead', compact('lead_type', 'lead_sources'));
     }
 }

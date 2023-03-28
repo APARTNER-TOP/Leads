@@ -35,9 +35,10 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::get('/dashboard', function () {
+    $lead_type = 1;
     $keys = Key::all();
 
-    return view('dashboard.leads.lead1', compact('keys'));
+    return view('dashboard.leads.lead', compact('lead_type','keys'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 require_once __DIR__.'/auth.php';

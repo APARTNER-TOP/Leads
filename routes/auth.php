@@ -47,7 +47,6 @@ Route::middleware('auth')->group(function () {
     // Route::get('dashboard/lead_source/edit/{id}', [LeadSourceController::class, 'edit'])->name('lead_source.edit');
 
     //! Queues
-    // Route::get('dashboard/queues', [QueueController::class, 'index'])->name('queues.index');
     // Route::patch('dashboard/queues/{id}/release', [QueueController::class, 'release'])->name('queue.release');
     Route::resource('dashboard/queues', QueueController::class);
 
@@ -64,12 +63,12 @@ Route::middleware('auth')->group(function () {
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
     //! Leads
-    Route::get('dashboard/leads/lead1', [LeadController::class, 'lead1'])->name('leads.lead1');
-    Route::get('dashboard/leads/lead2', [LeadController::class, 'lead2'])->name('leads.lead2');
+    Route::get('dashboard/leads/1', [LeadController::class, 'lead1'])->name('leads.lead1');
+    Route::get('dashboard/leads/2', [LeadController::class, 'lead2'])->name('leads.lead2');
 
     //! API
-    Route::post('dashboard/api/send1', [ApiController::class, 'send1'])->name('api.send1');
-    Route::post('dashboard/api/send2', [ApiController::class, 'send2'])->name('api.send2');
+    Route::post('dashboard/api/send/1', [ApiController::class, 'send1'])->name('api.send1');
+    Route::post('dashboard/api/send/2', [ApiController::class, 'send2'])->name('api.send2');
 
     //! Logs
     Route::resource('dashboard/logs', LogController::class);
