@@ -31,7 +31,7 @@
                                 <div class="d-fle col-4">
                                     <a href="{{ route('users.edit', $item->id) }}" class="btn btn-warning ml-2 mr-2">{{ __('Edit') }}</a>
 
-                                    @if($item->id > 1)
+                                    @if($item->id >= 1)
                                     <form method="POST" class="btn btn-danger" action="{{ route('users.delete', $item->id) }}">
                                         @csrf
                                         <button>

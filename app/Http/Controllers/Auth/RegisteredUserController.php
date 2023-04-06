@@ -13,6 +13,15 @@ use Illuminate\Validation\Rules;
 
 class RegisteredUserController extends Controller
 {
+    private $user_count;
+    private $find_admin;
+
+    public function __construct()
+    {
+        $this->user_count = User::count();
+        $this->find_admin = User::where('admin', 1)->first();
+    }
+
     /**
      * Display the registration view.
      *
@@ -20,9 +29,7 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
-        $user_count = User::count();
-
-        if ($user_count) {
+        if ($this->user_count && $this->find_admin == true) {
             return redirect('/');
         }
 
@@ -39,9 +46,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
-        $user_count = User::count();
-
-        if ($user_count) {
+        if ($this->user_count && $this->find_admin == true) {
             return redirect('/');
         } else {
             $admin = 1;

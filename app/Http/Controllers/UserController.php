@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Check;
 use App\Models\User;
 
@@ -118,7 +119,11 @@ class UserController extends Controller
             return redirect('/dashboard');
         }
 
-        if($id == 1) {
+        if(Auth::user()->admin == 1 && Auth::user()->id == $id && $id == 1) {
+            if(User::find($id)->delete()) {
+                return redirect('/dashboard/users')->with('success','User successfully deleted');
+            }
+        } elseif($id == 1) {
             return back()->with('error','Disable delete this administrator');
         }
 
