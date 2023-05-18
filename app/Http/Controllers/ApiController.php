@@ -138,6 +138,7 @@ class ApiController extends Controller
 
     //! api lead 2
     protected static $api2 = 'http://64.227.60.37/api/email/lead';
+    protected static $api2_sandbox = 'https://api.batscrm.com/leads-sandbox/sandbox';
 
     /**
      * Leads 2 Api send.
@@ -225,7 +226,7 @@ class ApiController extends Controller
         $curl = curl_init();
 
         curl_setopt_array($curl, [
-            CURLOPT_URL            => self::$api2,
+            CURLOPT_URL            => config('settings.api_sandbox') ? self::$api2_sandbox : self::$api2,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING       => '',
             CURLOPT_MAXREDIRS      => 10,
@@ -290,7 +291,7 @@ class ApiController extends Controller
 
 
         //! start first example code
-        // $response = Http::post(env('API_SANDBOX') ? self::$api2 : self::$api2, json_decode($json));
+        // $response = Http::post(env('API_SANDBOX') ? self::$api2_sandbox : self::$api2, json_decode($json));
 
         // $response_json = json_encode($response->body());
 

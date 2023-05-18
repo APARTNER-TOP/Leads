@@ -13,6 +13,8 @@ if (version_compare($php_version, '8.0.0', '>=')) {
 
 return [
 
+    'demo' => env('APP_DEMO', true),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
